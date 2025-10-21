@@ -1,0 +1,173 @@
+{
+  "name": "kp-mcp-registry",
+  "displayName": "MCP Registry",
+  "description": "VS Code extension for managing Model Context Protocol servers through KP MCP Registry API",
+  "version": "0.1.0",
+  "engines": {
+    "vscode": "^1.105.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "id": "mcpServerExplorer",
+          "name": "MCP Servers",
+          "when": "mcpRegistryEnabled",
+          "icon": "$(server)"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "mcpRegistry.refreshServers",
+        "title": "Refresh",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "mcpRegistry.publishServer",
+        "title": "Publish MCP Server",
+        "icon": "$(cloud-upload)"
+      },
+      {
+        "command": "mcpRegistry.createServerConfig",
+        "title": "Create Server Config",
+        "icon": "$(file-add)"
+      },
+      {
+        "command": "mcpRegistry.authenticate",
+        "title": "Authenticate with MCP Registry",
+        "icon": "$(key)"
+      },
+      {
+        "command": "mcpRegistry.disableAuth",
+        "title": "Disable Authentication (Dev Mode)",
+        "icon": "$(unlock)"
+      },
+      {
+        "command": "mcpRegistry.enableAuth",
+        "title": "Enable Authentication",
+        "icon": "$(lock)"
+      },
+      {
+        "command": "mcpRegistry.viewServerDetails",
+        "title": "View Details",
+        "icon": "$(info)"
+      },
+      {
+        "command": "mcpRegistry.deleteServer",
+        "title": "Delete Server",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "mcpRegistry.updateServer",
+        "title": "Update Server",
+        "icon": "$(edit)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "mcpRegistry.refreshServers",
+          "when": "view == mcpServerExplorer",
+          "group": "navigation"
+        },
+        {
+          "command": "mcpRegistry.publishServer",
+          "when": "view == mcpServerExplorer",
+          "group": "navigation"
+        },
+        {
+          "command": "mcpRegistry.authenticate",
+          "when": "view == mcpServerExplorer",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "mcpRegistry.viewServerDetails",
+          "when": "view == mcpServerExplorer && viewItem == mcpServer",
+          "group": "inline"
+        },
+        {
+          "command": "mcpRegistry.updateServer",
+          "when": "view == mcpServerExplorer && viewItem == mcpServer",
+          "group": "inline"
+        },
+        {
+          "command": "mcpRegistry.deleteServer",
+          "when": "view == mcpServerExplorer && viewItem == mcpServer",
+          "group": "inline"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "mcpRegistry.createServerConfig",
+          "title": "MCP: Create Server Configuration"
+        },
+        {
+          "command": "mcpRegistry.publishServer",
+          "title": "MCP: Publish Server to Registry"
+        },
+        {
+          "command": "mcpRegistry.authenticate",
+          "title": "MCP: Authenticate with Registry"
+        },
+        {
+          "command": "mcpRegistry.disableAuth",
+          "title": "MCP: Disable Authentication (Dev Mode)"
+        },
+        {
+          "command": "mcpRegistry.enableAuth",
+          "title": "MCP: Enable Authentication"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "MCP Registry",
+      "properties": {
+        "mcpRegistry.apiBaseUrl": {
+          "type": "string",
+          "default": "http://localhost:5000",
+          "description": "Base URL for the MCP Registry API"
+        },
+        "mcpRegistry.autoRefresh": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically refresh server list on extension activation"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "npm run check-types && npm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "npm run check-types && npm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.105.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "@typescript-eslint/eslint-plugin": "^8.45.0",
+    "@typescript-eslint/parser": "^8.45.0",
+    "eslint": "^9.36.0",
+    "esbuild": "^0.25.10",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.9.3",
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "^2.5.2"
+  }
+}
